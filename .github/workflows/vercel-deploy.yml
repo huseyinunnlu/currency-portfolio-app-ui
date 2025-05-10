@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - prod-release # Trigger deployment when changes are merged to prod-release
-  pull_request:
-    branches:
-      - prod-release # For pull requests targeting the prod-release branch
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,7 +17,7 @@ jobs:
           node-version: '18' # Use the Node.js version that matches your project
 
       - name: Install dependencies
-        run: npm run install
+        run: npm install
 
       - name: Build project
         run: npm run build
