@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'web-api.forinvestcdn.com',
+                pathname: '/definitions/icon/**',
+            },
+        ],
+        dangerouslyAllowSVG: true,
+        unoptimized: true
+    },
 };
 
 export default nextConfig;
