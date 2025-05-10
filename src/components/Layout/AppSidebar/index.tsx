@@ -12,7 +12,6 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import SidebarUser from '@/components/Layout/AppSidebar/Components/SidebarUser';
-import { Leaf } from 'lucide-react';
 import Link from 'next/link';
 
 function Logo() {
