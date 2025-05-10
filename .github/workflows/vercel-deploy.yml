@@ -1,0 +1,40 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - prod-release # Trigger deployment when changes are merged to prod-release
+  pull_request:
+    branches:
+      - prod-release # For pull requests targeting the prod-release branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use the Node.js version that matches your project
+
+      - name: Install dependencies
+        run: npm ci # Use 'npm ci' for clean installs in CI environments
+
+      - name: Build project
+        run: npm run build
+        env:
+          # Environment variables from .env.example
+          NEXT_PUBLIC_SOCKET_IO_URL: ${{ secrets.NEXT_PUBLIC_SOCKET_IO_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Your Vercel API token
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # Your Vercel Organization ID
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Your Vercel Project ID
+          working-directory: ./
+          vercel-args: '--prod' # Deploy to production 

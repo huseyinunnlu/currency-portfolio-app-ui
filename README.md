@@ -12,7 +12,7 @@ A web application for managing and tracking your currency portfolio with real-ti
 
 ## Live Preview
 
-[**View the live application here!**](https://your-deployment-url.com) *(Replace with your actual deployment URL)*
+[**View the live application here!**](https://currency-portfolio-app-ui.vercel.app/?tab=currency) *(Replace with your actual deployment URL)*
 
 ## Tech Stack
 
@@ -106,18 +106,3 @@ src/
 ├── store/        # Zustand state management stores
 └── styles/       # Global styles, Tailwind CSS base configuration
 ```
-
-## Learn More (Next.js)
-
-To learn more about Next.js, take a look at the following resources:
-
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
