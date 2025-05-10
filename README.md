@@ -39,7 +39,7 @@ A web application for managing and tracking your currency portfolio with real-ti
 
 1.  **Clone the repository (if you haven't already):**
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/huseyinunnlu/currency-portfolio-app-ui.git
     cd currency-portfolio-app-ui
     ```
 
