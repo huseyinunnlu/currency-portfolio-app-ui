@@ -77,7 +77,7 @@ export const useCurrencyStore = create<CurrencyState>((set, get) => ({
     definitions: null,
     fields: null,
     currencyData: null,
-    favorites: JSON.parse(localStorage.getItem('currencyFavorites') || '[]'),
+    favorites: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('currencyFavorites') || '[]') : [],
     setFields: (fields: FieldTypes[]) => set((state) => ({ ...state, fields })),
     setDefinitions: (definitions: DefinitionTypes[]) =>
         set((state) => ({
@@ -98,7 +98,9 @@ export const useCurrencyStore = create<CurrencyState>((set, get) => ({
                 ? state.favorites.filter((id) => id !== currencyId)
                 : [...state.favorites, currencyId];
 
-            localStorage.setItem('currencyFavorites', JSON.stringify(newFavorites));
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('currencyFavorites', JSON.stringify(newFavorites));
+            }
             return { ...state, favorites: newFavorites };
         }),
     setCurrency: (currencyData: Currency[]) =>
