@@ -12,7 +12,7 @@ A web application for managing and tracking your currency portfolio with real-ti
 
 ## Live Preview
 
-[**View the live application here!**](https://currency-portfolio-app-ui.vercel.app/?tab=currency) *(Replace with your actual deployment URL)*
+[**View the live application here!**](https://currency-portfolio-app-ui.vercel.app/?tab=currency)
 
 ## Tech Stack
 
