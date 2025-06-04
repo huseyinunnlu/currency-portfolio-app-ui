@@ -1,6 +1,14 @@
 interface TitlesByKeyTypes {
     [key: string]: string;
 }
+
+interface CurrencyKeysByTabTypes {
+    gold: string[];
+    currency: string[];
+    favorites: string[];
+    [key: string]: string[];
+}
+
 export const TITLES_BY_ID: TitlesByKeyTypes = {
     o10: 'USD',
     o11: 'Euro',
@@ -136,4 +144,26 @@ export const TITLES_BY_ID: TitlesByKeyTypes = {
     H1312: 'KOZAL',
     H2178: 'ODAS',
     H2410: 'DESA',
+};
+
+export const currencyKeysByTab: CurrencyKeysByTabTypes = {
+    gold: [
+        'o15',
+        'o13',
+        'o2209',
+        'o34',
+        'o37',
+        'o28',
+        'o32',
+        'o14',
+        'o41',
+        'o31',
+        'o39',
+        'o27',
+        'o36',
+        'o33',
+        'o38',
+    ],
+    currency: ['o10', 'o11', 'o865', 'o857', 'o2633', 'o2110', 'o1978', 'o1734', 'o1698', 'o3293'],
+    favorites: [],
 };

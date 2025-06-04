@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/sidebar';
 import SidebarUser from '@/components/Layout/AppSidebar/Components/SidebarUser';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Wallet } from 'lucide-react';
 
 function Logo() {
     return (
@@ -36,7 +38,20 @@ export default function AppSidebar() {
             <SidebarHeader>
                 <Logo />
             </SidebarHeader>
-            <SidebarContent>content</SidebarContent>
+            <SidebarContent>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton
+                            asChild
+                        >
+                            <Link href="/my-portfolio">
+                                <Wallet className="size-4" />
+                                My Portfolio
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarContent>
             <SidebarFooter>
                 <SidebarUser />
             </SidebarFooter>

@@ -2,6 +2,10 @@ import { create } from 'zustand';
 
 import { TITLES_BY_ID } from '@/constants';
 
+type Title = {
+    title: string;
+};
+
 export interface CommonTypes {
     _id: string;
     type: string;
@@ -37,7 +41,7 @@ export interface FieldTypes extends CommonTypes {
     shortCode: string;
 }
 
-export interface Currency extends DefinitionTypes {
+export interface CurrencyData {
     _id: string;
     _s: number;
     _i: string;
@@ -49,8 +53,7 @@ export interface Currency extends DefinitionTypes {
     a: number;
     h: number;
     L: number;
-    title: string;
-    Wh:number
+    Wh: number;
     Wl: number;
     wp: number;
     Mh: number;
@@ -61,23 +64,29 @@ export interface Currency extends DefinitionTypes {
     yp: number;
 }
 
+export type Currency = CurrencyData & DefinitionTypes & Title;
+
 export interface CurrencyState {
     definitions: DefinitionTypes[] | null;
     fields: FieldTypes[] | null;
     currencyData: Currency[] | null;
     favorites: string[];
-    setCurrency: (currencyData: Currency[]) => void;
+    setCurrency: (currencyData: CurrencyData[]) => void;
     setDefinitions: (definitions: DefinitionTypes[]) => void;
     setFields: (fields: FieldTypes[]) => void;
     getByCurrency: (keys: string[]) => Currency[] | null;
     toggleFavorite: (currencyId: string) => void;
+    formatCurrencyData: (currencyData: CurrencyData[]) => Currency[];
 }
 
 export const useCurrencyStore = create<CurrencyState>((set, get) => ({
     definitions: null,
     fields: null,
     currencyData: null,
-    favorites: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('currencyFavorites') || '[]') : [],
+    favorites:
+        typeof window !== 'undefined'
+            ? JSON.parse(localStorage.getItem('currencyFavorites') || '[]')
+            : [],
     setFields: (fields: FieldTypes[]) => set((state) => ({ ...state, fields })),
     setDefinitions: (definitions: DefinitionTypes[]) =>
         set((state) => ({
@@ -103,20 +112,24 @@ export const useCurrencyStore = create<CurrencyState>((set, get) => ({
             }
             return { ...state, favorites: newFavorites };
         }),
-    setCurrency: (currencyData: Currency[]) =>
+    formatCurrencyData: (currencyData: CurrencyData[]) => {
+        const state = get();
+        const data = currencyData.map((currency) => {
+            const definition = state.definitions?.find((def) => def._id === currency._i) || {};
+
+            return {
+                ...currency,
+                _id: currency._i,
+                ...definition,
+                title: TITLES_BY_ID[currency._i],
+            } as Currency;
+        });
+        return data;
+    },
+    setCurrency: (currencyData: CurrencyData[]) =>
         set((state) => {
             const currencyDataIds = currencyData.map((currency) => currency._i);
-            const formattedData = currencyData.map((currency) => {
-                const definition = state.definitions?.find((def) => def._id === currency._i);
-                //const field = state.fields?.find((field) => field._id === key);
-
-                return {
-                    ...currency,
-                    _id: currency._i,
-                    ...(definition || null),
-                    title: TITLES_BY_ID[currency._i],
-                };
-            });
+            const formattedData = get().formatCurrencyData(currencyData);
 
             return {
                 ...state,

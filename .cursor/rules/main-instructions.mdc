@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Currency Portfolio App UI - Development Guidelines
+
+## Project Overview
+This is a Next.js-based currency portfolio application that displays real-time currency, gold, and other financial data. The app uses a modern tech stack including React 19, Next.js 15, TailwindCSS, Zustand for state management, and React Query for data fetching.
+
+## Code Structure
+- `src/app`: Contains the Next.js app router pages and layouts
+- `src/components`: Reusable UI components organized by functionality
+  - `ui/`: Shadcn-style UI components (button, card, tabs, etc.)
+  - `Shared/`: Shared components used across multiple pages
+  - `Layout/`: Layout-specific components
+- `src/store`: Zustand stores for state management
+- `src/hooks`: Custom React hooks
+- `src/constants`: Application constants and fixed data
+- `src/queries`: React Query related code for API data fetching
+- `src/lib`: Utility functions and helper code
+
+## Coding Standards
+1. **TypeScript**: All code should be strongly typed with TypeScript
+2. **Component Structure**: Use functional components with hooks
+3. **Naming Conventions**:
+   - Hooks: camelCase with 'use' prefix (e.g., useMobile)
+   - Utility functions: camelCase
+   - Constants: UPPER_SNAKE_CASE
+   - Component structure: ComponentName/index.tsx
+
+## State Management
+- Use Zustand for global state management
+- Each store should be in its own file in the `src/store` directory
+- Local component state should use useState/useReducer
+
+## UI Components
+- The project uses Shadcn UI components in `src/components/ui`
+- For new UI components, follow the existing pattern and extend the ui directory
+- Use TailwindCSS for styling, following the established class naming patterns
+
+## Data Fetching
+- Use React Query for API data fetching
+- Socket connections are used for real-time data
+
+## Routing
+- The app uses Next.js App Router
+- Route parameters are handled in directory names with square brackets (e.g., [key])
+
+## API Integration
+- Axios is used for HTTP requests
+- Socket.io client is used for real-time updates
+
+## Best Practices
+1. Follow the established component structure and type definitions
+2. Maintain separation of concerns between UI, data fetching, and state management
+3. Reuse existing UI components when possible
+4. Ensure responsive design works across all screen sizes
+5. Keep components small and focused on a single responsibility
+6. Follow the existing importing order using the Prettier plugin for import sorting 
+
+## API Response Structure
+- All API responses must return this structure:
+```json
+{
+    "success": true,
+    "message": "Success",
+    "data": {}  || []
+}
+```
+
+- If an error occurs, return error message with the following structure:
+```json
+{
+    "success": false,
+    "message": "Error message",
+    "errorCode": 000000,
+}
+``` 

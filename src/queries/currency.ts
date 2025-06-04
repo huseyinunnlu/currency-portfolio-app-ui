@@ -1,6 +1,10 @@
-import { DefinitionTypes, FieldTypes } from '@/store/currencyStore';
 import { useQuery } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
+
+import apiClient from '@/lib/apiClient';
+import { ApiResponse } from '@/lib/apiClient';
+import { getCookie } from '@/lib/utils';
+import { Currency, DefinitionTypes, useCurrencyStore } from '@/store/currencyStore';
+import { FieldTypes } from '@/store/currencyStore';
 
 export interface DefinitionsResponse {
     definitions: DefinitionTypes[];
@@ -12,7 +16,7 @@ export interface CurrencyHistoryFilters {
     startDate: number;
     endDate: number;
     legacyCode: string | null;
-    period: "60" | "1440";
+    period: '60' | '1440';
 }
 
 export interface CurrencyHistoryResponse {
@@ -23,20 +27,39 @@ export interface CurrencyHistoryResponse {
     c: number;
 }
 
-const getDefinitionsFn = async (): Promise<AxiosResponse<DefinitionsResponse>> => {
-    return await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/definitions`);
+/**
+ * Get currency definitions and field mappings
+ */
+const getDefinitions = async (): Promise<ApiResponse<DefinitionsResponse>> => {
+    return await apiClient.get<DefinitionsResponse>('/definitions');
 };
 
-const getCurrencyHistory = async (filters: CurrencyHistoryFilters): Promise<AxiosResponse<CurrencyHistoryResponse[]>> => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/currency-history/${encodeURIComponent(filters.legacyCode || "")}?startDate=${filters.startDate}&endDate=${filters.endDate}&period=${filters.period}`;
+/**
+ * Get historical currency data
+ */
+const getCurrencyHistory = async (
+    filters: CurrencyHistoryFilters
+): Promise<ApiResponse<CurrencyHistoryResponse[]>> => {
+    const url = `/currency-history/${encodeURIComponent(filters.legacyCode || '')}?startDate=${filters.startDate}&endDate=${filters.endDate}&period=${filters.period}`;
+    return await apiClient.get<CurrencyHistoryResponse[]>(url);
+};
 
-    return await axios.get(url);
+const getCurrentPricesByKeys = async (keys: string[]): Promise<ApiResponse<Currency[]>> => {
+    return await apiClient.post<Currency[]>(
+        `/get-current-prices-by-keys`,
+        { keys },
+        {
+            headers: {
+                Authorization: `Bearer ${getCookie('auth_token')}`,
+            },
+        }
+    );
 };
 
 export const useGetDefinitions = () => {
     return useQuery({
         queryKey: ['GET_DEFINITIONS'],
-        queryFn: getDefinitionsFn,
+        queryFn: getDefinitions,
     });
 };
 
@@ -45,5 +68,15 @@ export const useGetCurrencyHistory = (isValidKey: boolean, filters: CurrencyHist
         queryKey: ['GET_CURRENCY_HISTORY', filters, isValidKey],
         enabled: isValidKey,
         queryFn: () => getCurrencyHistory(filters),
+    });
+};
+
+export const useGetCurrentPricesByKeys = (keys: string[]) => {
+    return useQuery({
+        queryKey: ['GET_CURRENT_PRICES_BY_KEYS'],
+        queryFn: () => getCurrentPricesByKeys(keys),
+        select: (data) => {
+            return useCurrencyStore.getState().formatCurrencyData(data.data || []);
+        },
     });
 };

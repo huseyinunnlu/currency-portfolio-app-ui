@@ -1,8 +1,9 @@
 interface SpinnerProps {
     size?: number;
+    className?: string;
 }
 
-export default function Spinner({ size = 48 }: SpinnerProps) {
+export default function Spinner({ size = 48, className }: SpinnerProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +15,7 @@ export default function Spinner({ size = 48 }: SpinnerProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="animate-spin"
+            className={`animate-spin ${className}`}
         >
             <path d="M21 12a9 9 0 1 1-6.219-8.56" />
         </svg>

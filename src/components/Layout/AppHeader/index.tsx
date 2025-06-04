@@ -12,6 +12,10 @@ const breadcrumbs = [
         title: 'Home',
         href: '/',
     },
+    {
+        title: 'My Portfolio',
+        href: '/my-portfolio',
+    },
 ];
 
 export default function AppHeader() {
